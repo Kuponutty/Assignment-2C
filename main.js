@@ -18,8 +18,24 @@
                     value: card.value,
                     suit: card.suit
                 }));
+//function to check if it's a flush
+    function isMatchingSuits(input){
+        let i = 0;
+        while (i < input.length - 1){
+            if (input[i + 1].suit === input[i].suit){
+                i++
+            }
+            else {
+                return false;
+            }
+
+            }
+            return true; 
+          }
+
+
     //testing data with console.log
-                console.log(myCards);
+                console.log(isMatchingSuits(myCards));
     //close second fetch
             });
     //close first fetch
