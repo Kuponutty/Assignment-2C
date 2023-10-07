@@ -12,7 +12,14 @@
         fetch(cardHandApiUrl)
             .then((response) => response.json())
             .then((handData) => {
-                console.log(handData.cards);
+                let myHandData = handData.cards;
+    //create an array using Array.map from myHandData.card information
+                let myCards = myHandData.map((card) => ({
+                    value: card.value,
+                    suit: card.suit
+                }));
+    //testing data with console.log
+                console.log(myCards);
     //close second fetch
             });
     //close first fetch
