@@ -75,7 +75,7 @@
     //function to check if a card hand matches all elements in the array containing face cards
     //insert cardHand.value aka myCards.value into this to evaluate
     function isRoyal(isHandRoyal){
-        let royalCards = ["10", "JACK", "QUEEN", "KING", "ACE"];
+        let royalCards = [10, 11, 12, 13, 14];
         return royalCards.every(element => isHandRoyal.includes(element));
     }
 
