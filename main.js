@@ -13,12 +13,15 @@
             .then((response) => response.json())
             .then((handData) => {
                 let myHandData = handData.cards;
+                let handValues = [];
+                let handSuits = [];
     //create an array of objects (myCards) using the map function, separating just the value (8) and suit ("DIAMONDS")
     //to use in later functions to examine what hands are available
-                let myCards = myHandData.map((card) => ({
-                    value: card.value,
-                    suit: card.suit
-                }));
+        for (const card of myHandData){
+            handValues.push(card.value);
+            handSuits.push(card.suit);
+        }
+
 //function to check if it's a 5-card flush
     function isMatchingSuits(input){
         let i = 0;
@@ -30,18 +33,76 @@
                 return false;
             }
 
-            }
+        }
             return true; 
-          }
-    //function to check if a card hand matches all elements in the array containing face cards
-    function isRoyal(arr, cardHand){
-        let royalCards = ["10", "JACK", "QUEEN", "KING", "ACE"];
-        return royalCards.every(element => arr.includes(element));
     }
 
+    //function to convert face cards to numerical values
+    function convertToNumbers(cardValues){
+        let convertedValues = [];
+        for (let i = 0; i < cardValues.length; i++){
+            let numericValue;
+        //checks facecard cases and returns a corresponding number value
+            switch (cardValues[i]){
+                case "ACE":
+                    numericValue = 14;
+                    break;
+                case "KING":
+                    numericValue = 13;
+                    break;
+                case "QUEEN":
+                    numericValue = 12;
+                    break;
+                case "JACK":
+                    numericValue = 11;
+                    break;
+            //sets default, if not a face card, change the number string to an int
+                default:
+                    numericValue = parseInt(cardValues[i]);
+                    break;
+            }
+            convertedValues.push(numericValue);
+        }
+        //sort the numbers is ascending order, compares 2 elements (a, b), (a-b) calculates the difference
+        //if the result is negative or zero, it's returned in their current order, if positive it 
+        //switches the order
+        convertedValues.sort((a, b) => a - b);
+        return convertedValues;
+        }
+       /*arr.sort((a, b) => parseInt(a) - parseInt(b));
+
+        if (cardValues === "JACK"){
+            return 11;
+        }
+        else if (cardValues === "QUEEN"){
+            return 12;
+        }
+        else if (cardValues === "KING"){
+            return 13;
+        }
+        else if (cardValues === "ACE"){
+            return 14;
+        }
+        else {
+            return parseInt(cardValues);
+        }
+        */
+
+    console.log(convertToNumbers(handValues));
+
+    //function to check if a card hand matches all elements in the array containing face cards
+    //insert cardHand.value aka myCards.value into this to evaluate
+    function isRoyal(isHandRoyal){
+        let royalCards = ["10", "JACK", "QUEEN", "KING", "ACE"];
+        return royalCards.every(element => isHandRoyal.includes(element));
+    }
+
+    function isStraight(isHandStraight){
+
+    }
 
     //testing data with console.log
-                console.log(isMatchingSuits(myCards));
+                console.log();
     //close second fetch
             });
     //close first fetch
