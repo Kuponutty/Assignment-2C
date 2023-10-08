@@ -33,6 +33,11 @@
             }
             return true; 
           }
+    //function to check if a card hand matches all elements in the array containing face cards
+    function isRoyal(arr, cardHand){
+        let royalCards = ["10", "JACK", "QUEEN", "KING", "ACE"];
+        return royalCards.every(element => arr.includes(element));
+    }
 
 
     //testing data with console.log
