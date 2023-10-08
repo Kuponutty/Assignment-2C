@@ -69,24 +69,6 @@
         convertedValues.sort((a, b) => a - b);
         return convertedValues;
         }
-       /*arr.sort((a, b) => parseInt(a) - parseInt(b));
-
-        if (cardValues === "JACK"){
-            return 11;
-        }
-        else if (cardValues === "QUEEN"){
-            return 12;
-        }
-        else if (cardValues === "KING"){
-            return 13;
-        }
-        else if (cardValues === "ACE"){
-            return 14;
-        }
-        else {
-            return parseInt(cardValues);
-        }
-        */
 
     console.log(convertToNumbers(handValues));
 
