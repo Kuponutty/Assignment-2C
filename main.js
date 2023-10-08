@@ -13,12 +13,13 @@
             .then((response) => response.json())
             .then((handData) => {
                 let myHandData = handData.cards;
-    //create an array using Array.map from myHandData.card information
+    //create an array of objects (myCards) using the map function, separating just the value (8) and suit ("DIAMONDS")
+    //to use in later functions to examine what hands are available
                 let myCards = myHandData.map((card) => ({
                     value: card.value,
                     suit: card.suit
                 }));
-//function to check if it's a flush
+//function to check if it's a 5-card flush
     function isMatchingSuits(input){
         let i = 0;
         while (i < input.length - 1){
