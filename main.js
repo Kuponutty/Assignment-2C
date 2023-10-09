@@ -137,7 +137,6 @@ console.log(handSuits);
         //modified previous function to check for just 3 of a kind
         function isThreeOfAKind(cardArray){
             let matchCount = {};
-            let pairCount = 0;
             let threeOfAKind = false;
             let twoOfAKind = false;
 
@@ -215,7 +214,8 @@ console.log(handSuits);
         let royalCards = [10, 11, 12, 13, 14];
         return royalCards.every(element => isHandRoyal.includes(element));
     }
-
+    
+    //function to identify which is the highest available hand using previous functions
     function findBestHand(cardArray){
 
     let bestHand = "";
