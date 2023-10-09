@@ -70,7 +70,116 @@
         return convertedValues;
         }
 
+        //function to check if numbers in array are sequential
+        function isSequential(numberArray){
+            for (i = 0; i < numberArray.length; i++){
+                if (numberArray[i] !== numberArray[i -1] + 1){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        //function to check if there's pairs, how many pairs
+        function isFourOfAKind(cardArray){
+            let matchCount = {};
+            //iterate through the cardArray, cardValue just a different name for i
+            for (const cardValue of cardArray){
+                //go through the array and count the occurances of each number/card value, sets default value of 0
+                matchCount[cardValue] = (matchCount[cardValue] || 0) + 1;
+            }
+            //checks the values of the matchCount object, then an arrow function to check if any of the values = 4, signifying 4 of a kind
+            for (const match in matchCount){
+                if (matchCount[match] === 4){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //check if the hand is a full house
+        function isFullHouse(cardArray){
+            let matchCount = {};
+            let threeOfAKind = false;
+            let twoOfAKind = false;
+            //iterate through cardArray and increment matchCount if there's a match
+            for (const cardValue of cardArray){
+                matchCount[cardValue] = (matchCount[cardValue] || 0) + 1;
+            }
+            //if there's 3 of a kind or two of a kind, return true
+            for (const match in matchCount){
+                if (matchCount[match] === 3){
+                    threeOfAKind = true;
+                } else if (matchCount[match] === 2){
+                    twoOfAKind = true;
+                }
+            }
+            //if both are true, return true, otherwise false
+            return threeOfAKind && twoOfAKind;
+        }
+
+        //modified previous function to check for just 3 of a kind
+        function isThreeOfAKind(cardArray){
+            let matchCount = {};
+            let pairCount = 0;
+            let threeOfAKind = false;
+            let twoOfAKind = false;
+
+            for (const cardValue of cardArray){
+                matchCount[cardValue] = (matchCount[cardValue] || 0) + 1;
+            }
+            for (const match in matchCount){
+                if (matchCount[match] === 3){
+                    threeOfAKind = true;
+                } else if (matchCount[match] === 2){
+                    twoOfAKind = true;
+                }
+            }
+            if (threeOfAKind === true && twoOfAKind === false){
+                return true;
+            }
+        }
+
+        //modified previous function to check for 2 pairs
+        function isTwoPair(cardArray){
+            let matchCount = {};
+            let pairCount = 0;
+
+            for (const cardValue of cardArray){
+                matchCount[cardValue] = (matchCount[cardValue] || 0) + 1;
+            }
+            for (const match in matchCount){
+                if (matchCount[match] === 2){
+                    pairCount++
+                }
+            }
+            return pairCount === 2;
+        }
+
+        //reused function to find if it's just one pair
+        function isOnePair(cardArray){
+            let matchCount = {};
+            let pairCount = 0;
+
+            for (const cardValue of cardArray){
+                matchCount[cardValue] = (matchCount[cardValue] || 0) + 1;
+            }
+            for (const match in matchCount){
+                if (matchCount[match] === 2){
+                    pairCount++
+                }
+            }
+            return pairCount === 1;
+        }
+
+        function highCard(cardArray){
+            //convert the array into numbers, sorted, then take the last number as the highest number
+            convertToNumbers(cardArray);
+            return cardArray[cardArray.length];
+        }
+
     console.log(convertToNumbers(handValues));
+    console.log(handSuits);
 
     //function to check if a card hand matches all elements in the array containing face cards
     //insert cardHand.value aka myCards.value into this to evaluate
@@ -79,12 +188,36 @@
         return royalCards.every(element => isHandRoyal.includes(element));
     }
 
-    function isStraight(isHandStraight){
+    function findBestHand(cardArray){
 
+    let bestHand = "";
+
+    if (isRoyal(handValues) === true && isMatchingSuits(handSuits) === true){
+        bestHand = "Royal Flush";
+    } else if (isSequential(handValues) === true && isMatchingSuits(handSuits) === true){
+        bestHand = "Straight Flush"
+    } else if (isFourOfAKind(handValues) === true){
+        bestHand = "Four of a Kind";
+    } else if (isFullHouse(handValues) === true){
+        bestHand = "Full House";
+    } else if (isMatchingSuits(handSuits) === true){
+        bestHand = "Flush";
+    } else if (isSequential(handValues) === true){
+        bestHand = "Straight";
+    } else if (isThreeOfAKind(handValues) === true){
+        bestHand = "Three of a Kind";
+    } else if (isTwoPair(handValues) === true){
+        bestHand = "Two Pair";
+    } else if (isOnePair(handValues) === true){
+        bestHand = "One Pair";
+    } else {
+        bestHand = "High Card of: " + highCard(handValues);
     }
+    return bestHand;
+}
 
     //testing data with console.log
-                console.log();
+                console.log(findBestHand());
     //close second fetch
             });
     //close first fetch
