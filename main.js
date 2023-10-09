@@ -21,11 +21,26 @@
             handValues.push(card.value);
             handSuits.push(card.suit);
         }
-
+console.log(handSuits);
 //function to check if it's a 5-card flush
-    function isMatchingSuits(input){
-        let i = 0;
+    function isMatchingSuits(cardArray){
+        let matchCount = {};
+        //iterate through the cardArray checking card suits
+        for (const cardSuit of cardArray){
+            //go through the array and count the occurances of each card suit value, sets default value of 0
+            matchCount[cardSuit] = (matchCount[cardSuit]) + 1;
+        }
+        //checks the values of the matchCount object, then an arrow function to check if any of the values = 4, signifying 4 of a kind
+        for (const match in matchCount){
+            if (matchCount[match] === 5){
+                return true;
+            }
+        }
+        return false;
+    }
+ /*       let i = 0;
         while (i < input.length - 1){
+            console.log(`Comparing ${input[i + 1].suit} with ${input[i].suit}`);
             if (input[i + 1].suit === input[i].suit){
                 i++
             }
@@ -36,6 +51,7 @@
         }
             return true; 
     }
+    */
 
     //function to convert face cards to numerical values
     function convertToNumbers(cardValues){
@@ -174,9 +190,21 @@
 
         function highCard(cardArray){
             //convert the array into numbers, sorted, then take the last number as the highest number
-            convertToNumbers(cardArray);
-            return cardArray[cardArray.length];
+            let highestCard = "";
+            let highestArray = convertToNumbers(cardArray);
+            highestCard = highestArray[highestArray.length - 1];
+            
+            if (highestCard === 14){
+                highestCard = "ACE";
+            } else if (highestCard === 13){
+                highestCard = "KING";
+            } else if (highestCard === 12){
+                highestCard = "QUEEN"
+            } else if (highestCard === 11){
+                highestCard = "JACK"
         }
+        return highestCard;
+    }
 
     console.log(convertToNumbers(handValues));
     console.log(handSuits);
