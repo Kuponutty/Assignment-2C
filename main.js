@@ -7,7 +7,18 @@
             .then((response) => response.json())
             .then((data) => {
                 let myDeck = data.deck_id;
-                let cardHandApiUrl = "https://deckofcardsapi.com/api/deck/" + myDeck + "/draw/?count=5";
+                //let cardHandApiUrl = "https://deckofcardsapi.com/api/deck/" + myDeck + "/draw/?count=5";
+                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/royalflush";
+                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/straightflush";
+                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/fourofakind";
+                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/fullhouse";
+                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/flush";
+                let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/straight";
+                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/threeofakind";
+                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/twopair";
+                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/onepair";
+                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/highcard";
+                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/random";
     //fetch from second API to get a hand of 5 cards, using data from first API to get a link
         fetch(cardHandApiUrl)
             .then((response) => response.json())
@@ -15,43 +26,52 @@
                 let myHandData = handData.cards;
                 let handValues = [];
                 let handSuits = [];
+    //Display the image links in the html file
+    let htmlId = document.getElementById('myData');
+    //CSS rule to display it left to right
+    htmlId.style.display = 'flex';
+    
+    //Iterate through the cards object
+    myHandData.forEach(card => {
+        // create a div for each card for formatting
+        const cardDiv = document.createElement('div');
+        //display each of the card images
+        const imageElement = document.createElement('img');
+        imageElement.src = card.image;
+        //create a matching <p> for each element to display the card text
+        const cardParagraph = document.createElement('p');
+        cardParagraph.textContent = `${card.value} of ${card.suit}`;
+        //close the img and p elements in the HTML
+        cardDiv.appendChild(imageElement);
+        cardDiv.appendChild(cardParagraph);
+        //close the div
+        htmlId.appendChild(cardDiv);
+    });
+
     //create an array of objects (myCards) using the map function, separating just the value (8) and suit ("DIAMONDS")
     //to use in later functions to examine what hands are available
         for (const card of myHandData){
             handValues.push(card.value);
             handSuits.push(card.suit);
         }
-console.log(handSuits);
+
+        //Debugging tests
+        console.log(myHandData);
+        console.log(handSuits);
+
 //function to check if it's a 5-card flush
     function isMatchingSuits(cardArray){
-        let matchCount = {};
-        //iterate through the cardArray checking card suits
-        for (const cardSuit of cardArray){
-            //go through the array and count the occurances of each card suit value, sets default value of 0
-            matchCount[cardSuit] = (matchCount[cardSuit]) + 1;
-        }
-        //checks the values of the matchCount object, then an arrow function to check if any of the values = 4, signifying 4 of a kind
-        for (const match in matchCount){
-            if (matchCount[match] === 5){
-                return true;
-            }
-        }
-        return false;
-    }
- /*       let i = 0;
-        while (i < input.length - 1){
-            console.log(`Comparing ${input[i + 1].suit} with ${input[i].suit}`);
-            if (input[i + 1].suit === input[i].suit){
-                i++
-            }
-            else {
+        //set the first suit in the array to a variable
+        const firstSuit = cardArray[0];
+        console.log(firstSuit);
+        //check if the first suit matches all the suits in the array
+        for (let i = 1; i < cardArray.length; i++) {
+            if (cardArray[i] !== firstSuit) {
                 return false;
             }
-
         }
-            return true; 
+        return true;
     }
-    */
 
     //function to convert face cards to numerical values
     function convertToNumbers(cardValues){
@@ -85,12 +105,27 @@ console.log(handSuits);
         convertedValues.sort((a, b) => a - b);
         return convertedValues;
         }
+        //convert the card values to numerical values so the other functions can check them correctly
+        handNumbers = convertToNumbers(handValues);
 
         //function to check if numbers in array are sequential
         function isSequential(numberArray){
-            for (i = 0; i < numberArray.length; i++){
-                if (numberArray[i] !== numberArray[i -1] + 1){
+            //sort the array in sequential numbers
+            numberArray.sort((a, b) => a - b);
+            //check if the cards are other versions of straights
+            for (let i = 0; i < numberArray.length - 1; i++) {
+                if (numberArray[i] !== numberArray[i + 1] - 1) {
                     return false;
+                }
+            }
+            return true;
+        }
+        //seperate function to check for a low straight (Ace low)
+        function lowStraight(numberArray){
+            const lowStraightValues = [2,3,4,5,14];
+            for (let i = 0; i < numberArray.length - 1; i++){
+                if (numberArray[i] !== lowStraightValues[i]){
+                    return false
                 }
             }
             return true;
@@ -205,44 +240,60 @@ console.log(handSuits);
         return highestCard;
     }
 
-    console.log(convertToNumbers(handValues));
+
     console.log(handSuits);
 
-    //function to check if a card hand matches all elements in the array containing face cards
-    //insert cardHand.value aka myCards.value into this to evaluate
-    function isRoyal(isHandRoyal){
-        let royalCards = [10, 11, 12, 13, 14];
-        return royalCards.every(element => isHandRoyal.includes(element));
-    }
+    //function to check if the card array contains royal cards only
+    function isRoyal(cardArray) {
+        const requiredRoyalValues = [10, 11, 12, 13, 14];
+        //check if each index matches each other
+        for (let i = 0; i < cardArray.length; i++) {
+            if (requiredRoyalValues[i] !== cardArray[i]) return false;
+        }
+        return true;
+        }
     
+        // // Check if all required royal values are present in the hand
+        // return requiredRoyalValues.every(value =>
+        //     cardArray.some(card => card.value === value)
+        // );
+    
+
+console.log(handNumbers);
     //function to identify which is the highest available hand using previous functions
-    function findBestHand(cardArray){
+    function findBestHand(){
 
     let bestHand = "";
 
-    if (isRoyal(handValues) === true && isMatchingSuits(handSuits) === true){
+    if (isRoyal(handNumbers) === true && isMatchingSuits(handSuits) === true){
         bestHand = "Royal Flush";
-    } else if (isSequential(handValues) === true && isMatchingSuits(handSuits) === true){
+    } else if (isSequential(handNumbers) === true && isMatchingSuits(handSuits) === true){
         bestHand = "Straight Flush"
-    } else if (isFourOfAKind(handValues) === true){
+    } else if (isFourOfAKind(handNumbers) === true){
         bestHand = "Four of a Kind";
-    } else if (isFullHouse(handValues) === true){
+    } else if (isFullHouse(handNumbers) === true){
         bestHand = "Full House";
     } else if (isMatchingSuits(handSuits) === true){
         bestHand = "Flush";
-    } else if (isSequential(handValues) === true){
+    } else if (isSequential(handNumbers) === true || lowStraight(handNumbers) === true){
         bestHand = "Straight";
-    } else if (isThreeOfAKind(handValues) === true){
+    } else if (isThreeOfAKind(handNumbers) === true){
         bestHand = "Three of a Kind";
-    } else if (isTwoPair(handValues) === true){
+    } else if (isTwoPair(handNumbers) === true){
         bestHand = "Two Pair";
-    } else if (isOnePair(handValues) === true){
+    } else if (isOnePair(handNumbers) === true){
         bestHand = "One Pair";
     } else {
-        bestHand = "High Card of: " + highCard(handValues);
+        bestHand = "High Card of: " + highCard(handNumbers);
     }
     return bestHand;
 }
+
+//Output the best hand to the html file
+let returnBestHand = findBestHand();
+let htmlBestHand = document.getElementById('handResult');
+htmlBestHand.innerHTML = 'Your best hand is ' + returnBestHand;
+
 
     //testing data with console.log
                 console.log(findBestHand());
