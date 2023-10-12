@@ -13,9 +13,9 @@
                 //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/fourofakind";
                 //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/fullhouse";
                 //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/flush";
-                let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/straight";
+                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/straight";
                 //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/threeofakind";
-                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/twopair";
+                let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/twopair";
                 //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/onepair";
                 //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/highcard";
                 //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/random";
@@ -161,6 +161,7 @@
             for (const match in matchCount){
                 if (matchCount[match] === 3){
                     threeOfAKind = true;
+                //if there's also an index of 2 in the object
                 } else if (matchCount[match] === 2){
                     twoOfAKind = true;
                 }
@@ -171,20 +172,23 @@
 
         //modified previous function to check for just 3 of a kind
         function isThreeOfAKind(cardArray){
-            let matchCount = {};
+            let matchCount = [];
             let threeOfAKind = false;
             let twoOfAKind = false;
-
+            //check cardArray, if they're equal, increase matchcount
             for (const cardValue of cardArray){
                 matchCount[cardValue] = (matchCount[cardValue] || 0) + 1;
             }
+            //if matchCount increments to 3, there's 3 of a kind
             for (const match in matchCount){
                 if (matchCount[match] === 3){
                     threeOfAKind = true;
+                //checking if the other two cards are a pair to avoid false positives compared to a full house
                 } else if (matchCount[match] === 2){
                     twoOfAKind = true;
                 }
             }
+            //if there's 3 of a kind, and the other two are not a pair
             if (threeOfAKind === true && twoOfAKind === false){
                 return true;
             }
@@ -192,12 +196,13 @@
 
         //modified previous function to check for 2 pairs
         function isTwoPair(cardArray){
-            let matchCount = {};
+            let matchCount = [];
             let pairCount = 0;
 
             for (const cardValue of cardArray){
                 matchCount[cardValue] = (matchCount[cardValue] || 0) + 1;
             }
+            //if the matchCount = 2, increment the pair count, if pair count = 2 it's two of a kind
             for (const match in matchCount){
                 if (matchCount[match] === 2){
                     pairCount++
@@ -208,9 +213,9 @@
 
         //reused function to find if it's just one pair
         function isOnePair(cardArray){
-            let matchCount = {};
+            let matchCount = [];
             let pairCount = 0;
-
+            //same as previous except checking for a pairCount of 1
             for (const cardValue of cardArray){
                 matchCount[cardValue] = (matchCount[cardValue] || 0) + 1;
             }
@@ -227,7 +232,7 @@
             let highestCard = "";
             let highestArray = convertToNumbers(cardArray);
             highestCard = highestArray[highestArray.length - 1];
-            
+            //convert back to face cards to display in the website
             if (highestCard === 14){
                 highestCard = "ACE";
             } else if (highestCard === 13){
@@ -252,11 +257,6 @@
         }
         return true;
         }
-    
-        // // Check if all required royal values are present in the hand
-        // return requiredRoyalValues.every(value =>
-        //     cardArray.some(card => card.value === value)
-        // );
     
 
 console.log(handNumbers);
