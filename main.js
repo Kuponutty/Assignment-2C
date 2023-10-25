@@ -15,10 +15,10 @@
                 //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/flush";
                 //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/straight";
                 //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/threeofakind";
-                let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/twopair";
+                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/twopair";
                 //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/onepair";
                 //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/highcard";
-                //let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/random";
+                let cardHandApiUrl = "https://prog2700.onrender.com/pokerhandtest/random";
     //fetch from second API to get a hand of 5 cards, using data from first API to get a link
         fetch(cardHandApiUrl)
             .then((response) => response.json())
@@ -133,7 +133,7 @@
 
         //function to check if there's pairs, how many pairs
         function isFourOfAKind(cardArray){
-            let matchCount = {};
+            let matchCount = [];
             //iterate through the cardArray, cardValue just a different name for i
             for (const cardValue of cardArray){
                 //go through the array and count the occurances of each number/card value, sets default value of 0
@@ -150,7 +150,7 @@
 
         //check if the hand is a full house
         function isFullHouse(cardArray){
-            let matchCount = {};
+            let matchCount = [];
             let threeOfAKind = false;
             let twoOfAKind = false;
             //iterate through cardArray and increment matchCount if there's a match
